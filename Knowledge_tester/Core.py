@@ -25,6 +25,7 @@ class Test:
             print(self.data)
         else:
             print('Тесты не найдены!')
+            self.__init__()
 
     def give_test(self):
         print('Выберете тест по номеру')
