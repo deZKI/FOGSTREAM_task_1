@@ -22,7 +22,6 @@ class Test:
                 name = test.find('p').text
                 url = self.site_url + test.find('a')['href']
                 self.data.setdefault(i, [name, url])
-            print(self.data)
         else:
             print('Тесты не найдены!')
             self.__init__()
@@ -35,11 +34,13 @@ class Test:
         response = requests.get(self.data[choice][1])
         soup = bs4.BeautifulSoup(response.text, 'lxml')
         count_of_questions = len(soup.find(id='pgn'))
-        quest_answers = dict()
+        self.quest_answers = dict()
         for i in range(1, count_of_questions):
             question = soup.find(id=f'quest{i}').find('span', class_='what').text
             answers = list(map(lambda x:x.text, soup.find(id=f'quest{i}').find_all('li')))
-            quest_answers.setdefault(question, answers)
-        for question, answers in quest_answers.items():
+            self.quest_answers.setdefault(question, answers)
+        for question, answers in self.quest_answers.items():
             print(question, '\n', f'Варианты ответов:{answers}', '\n')
+
+
 
