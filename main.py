@@ -1,8 +1,15 @@
-import time
+from Knowledge_tester.UI_interface import Example
+from Knowledge_tester.Core import Test
+from tkinter import Tk
+#pip install lxml
+#pip install requests
+#pip install bs4
 
-import Knowledge_tester.Core
-import Knowledge_tester.UI_interface
-if __name__ == '__main__':
-    win = Knowledge_tester.UI_interface.Window()
-    # a = Knowledge_tester.Core.Test()
-    # a.give_test()
+if __name__ == "__main__":
+    # test = Test()
+    root = Tk()
+    root.title('Тестировщик знаний')
+    root.geometry("850x550+300+300")
+    root.resizable(False, False)
+    app = Example(root)
+    root.mainloop()
