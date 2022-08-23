@@ -33,15 +33,22 @@ class Test:
     def give_test(self, choice):
         response = requests.get(self.data[choice][1])
         soup = bs4.BeautifulSoup(response.text, 'lxml')
-        count_of_questions = len(soup.find(id='pgn'))
-        questions = []
-        answers = []
+        self.count_of_questions = len(soup.find(id='quests'))  # чтобы и блиц тесты проходили
         self.quest_answers = dict()
-        for i in range(1, count_of_questions):
-            question = soup.find(id=f'quest{i}').find('span', class_='what').text
-            answers.append(list(map(lambda x:x.text, soup.find(id=f'quest{i}').find_all('li'))))
-            questions.append(question)
-        return questions, answers
+        self.has_img = False
+        for i in range(1, self.count_of_questions + 1):
+            quest = soup.find(id=f'quest{i}')
+            question = quest.find('span', class_='what').text
+            question_img_url = quest.find('img')
+            if question_img_url != None:
+                self.has_img = True
+                img = open('Knowledge_tester/img/1.png', 'wb')
+                question_img = requests.get(self.site_url + question_img_url.attrs['src']).content
+                img.write(question_img)
+                img.close()
+            answers = list(map(lambda x: x.text, soup.find(id=f'quest{i}').find_all('li')))
+            yield question, answers
 
-
-
+            # out = open('1.img', "wb")
+            # out.write(question_img.content)
+            # out.close()

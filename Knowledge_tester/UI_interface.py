@@ -1,4 +1,6 @@
-from tkinter import Frame, BOTH, Button, messagebox, Listbox, SINGLE, END, Text, Entry
+from tkinter import Frame, Button, messagebox, Listbox, SINGLE, END, Text, Entry, Label
+
+from PIL import Image, ImageTk
 
 from Knowledge_tester.Core import Test
 
@@ -31,31 +33,31 @@ class Example(Frame):
         self.list_of_answers.delete('0', END)
 
         try:
-            self.question_text.insert('1.0', self.questions[self.number-1])
-        except IndexError:
+            question, answers = self.questions_answers.__next__()
+        except StopIteration:
+            self.img_label.destroy()
             self.create_end_menu()
         else:
-            for answer in self.answers[self.number-1]:
+            self.question_text.insert('1.0', question)
+            for answer in answers:
                 self.list_of_answers.insert(END, answer)
+            if self.test.has_img == True:
+                self.change_question_pic()
 
     def give_questions(self):
-        try:
-            self.questions, self.answers = self.test.give_test(int(self.list_of_topics.curselection()[0]) + 1)
-        except TypeError:
-            self.list_of_topics.delete(self.list_of_topics.curselection())
-        print(111111)
+        self.questions_answers = self.test.give_test(int(self.list_of_topics.curselection()[0]) + 1)
+        question, answers = self.questions_answers.__next__()
         self.number = 1
-        self.count = len(self.questions)
+        self.count = self.test.count_of_questions
         self.create_question_menu()
-
-        self.question_text.insert('1.0', self.questions[0])
-        for answer in self.answers[0]:
-           self.list_of_answers.insert(END, answer)
+        self.question_text.insert('1.0', question)
+        for answer in answers:
+            self.list_of_answers.insert(END, answer)
+        if self.test.has_img == True:
+            self.change_question_pic()
 
 
     def create_topic_menu(self):
-        self.pack(fill=BOTH, expand=1)
-
         self.topic = Entry()
         self.topic.place(x=0, y=0, width=700, height=65)
 
@@ -75,21 +77,31 @@ class Example(Frame):
         self.list_of_topics.destroy()
         self.number_of_question = Text(font=('Arial', 30))
         self.number_of_question.insert('1.0', f'Номер вопроса: {self.number} из {self.count}')
-        self.number_of_question.place(x=20, y=0, width=706, height=65)
+        self.number_of_question.place(x=20, y=0, width=810, height=50)
 
         self.question_text = Text(font=('Arial', 20))
-        self.question_text.place(x=20, y=65, width=810, height=65)
+        self.question_text.place(x=20, y=50, width=810, height=50)
+
+        self.img_label = Label()
+        self.img_label.place(x=20, y=90, width=810, height=400)
 
         self.list_of_answers = Listbox(selectmode=SINGLE, font=('Arial', 14))
-        self.list_of_answers.place(x=20, y=130, width=810, height=330)
+        self.list_of_answers.place(x=20, y=500, width=810, height=100)
 
         self.btn_accept = Button(text='Подтвердить', command=self.give_question)
-        self.btn_accept.place(x=20, y=461, width=810, height=90)
+        self.btn_accept.place(x=20, y=600, width=810, height=50)
+
+    def change_question_pic(self):
+        img = ImageTk.PhotoImage(
+            Image.open('/Users/kirill201/PycharmProjects/FOGSTREAM_task_1/Knowledge_tester/img/1.png'))
+        self.img_label.configure(image=img)
+        self.img_label.image = img
 
     def create_end_menu(self):
         self.list_of_answers.destroy()
         self.btn_accept.destroy()
         self.number_of_question.destroy()
+        self.question_text.destroy()
 
         msgbox = messagebox.askquestion('Поздравляю', '''Вы успешно прошли тест!\n
                                                       Для получения результата оплатите подписку\n
