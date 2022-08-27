@@ -46,7 +46,7 @@ class Test:
             question_img_url = quest.find('img')
             if question_img_url != None:
                 self.has_img = True
-                img = open('Knowledge_tester/img/1.png', 'wb')
+                img = open('img/1.png', 'wb')
                 question_img = requests.get(self.site_url + question_img_url.attrs['src']).content
                 img.write(question_img)
                 img.close()
