@@ -1,4 +1,4 @@
-from tkinter import Frame, Button, messagebox, Listbox, SINGLE, END, Text, Entry, Label
+from tkinter import Tk, Frame, Button, messagebox, Listbox, SINGLE, END, Text, Entry, Label
 
 from PIL import Image, ImageTk
 
@@ -83,7 +83,7 @@ class Example(Frame):
         self.question_text.place(x=20, y=50, width=810, height=50)
 
         self.img_label = Label()
-        self.img_label.place(x=20, y=90, width=810, height=400)
+        self.img_label.place(x=20, y=100, width=810, height=400)
 
         self.list_of_answers = Listbox(selectmode=SINGLE, font=('Arial', 14))
         self.list_of_answers.place(x=20, y=500, width=810, height=100)
@@ -118,4 +118,15 @@ class Example(Frame):
         # self.btn_restart.place(x=20, y=461, width=810, height=90)
 
 
+if __name__ == "__main__":
+    # img = requests.get('https://konstruktortestov.ru/files/2b58/1136/8fe2/71f8/bc8b/1f4b/ab0f/3729/904052167.jpg')
+    # out = open('1.jpeg', 'wb')
+    # out.write(img.content)
+    # out.close()
+    root = Tk()
+    root.title('Тестировщик знаний')
+    root.geometry("850x650+300+300")
+    root.resizable(False, False)
+    app = Example(root)
+    root.mainloop()
 

@@ -1,3 +1,7 @@
+# pip install lxml
+# pip install requests
+# pip install bs4
+
 import bs4  # для парсинга информации
 import requests  # для запроса
 
@@ -52,3 +56,4 @@ class Test:
             # out = open('1.img', "wb")
             # out.write(question_img.content)
             # out.close()
+
